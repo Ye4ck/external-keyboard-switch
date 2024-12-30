@@ -9,10 +9,9 @@ bool lastButtonState = HIGH;   // Letzter Zustand des Buttons
 unsigned long lastDebounceTime = 0; // Zeit, wann der Zustand zuletzt geändert wurde
 
 void setup() {
-  // Konfiguriere den Button-Pin als Eingang mit Pull-up-Widerstand
+  // Konfiguriere mit Pull-up-Widerstand
   pinMode(buttonPin, INPUT_PULLUP);
 
-  // Initialisiere die Tastatur
   Keyboard.begin();
 }
 
@@ -34,13 +33,12 @@ void loop() {
 
       // Aktionen basierend auf dem Button-Zustand
       if (buttonState == LOW) {
-        Keyboard.press(keyCode); // Taste drücken
+        Keyboard.press(keyCode); 
       } else {
-        Keyboard.releaseAll();  // Alle Tasten loslassen
+        Keyboard.releaseAll();  
       }
     }
   }
 
-  // Aktualisiere den letzten Zustand
   lastButtonState = reading;
 }
