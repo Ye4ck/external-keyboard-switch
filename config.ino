@@ -1,6 +1,6 @@
 #include "Keyboard.h"
 
-const char keyCode = '^';      // Setzten der Taste die gedrückt werden soll, format: 'Taste'
+const char keyCode = '`';      // Setzten der Taste die gedrückt werden soll, format: 'Taste'
 const int buttonPin = 2;       // Pin, an dem der Taster angeschlossen ist
 const unsigned long debounceDelay = 50; // Entprellzeit in Millisekunden
 
