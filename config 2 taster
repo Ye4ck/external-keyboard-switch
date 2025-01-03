@@ -1,0 +1,55 @@
+#include "Keyboard.h"
+
+const char keyCode1 = '`';     // Taste für den ersten Taster
+const char keyCode2 = 'y';     // Taste für den zweiten Taster
+const int buttonPin1 = 2;      // Pin für den ersten Taster
+const int buttonPin2 = 3;      // Pin für den zweiten Taster
+const unsigned long debounceDelay = 50; // Entprellzeit in Millisekunden
+
+bool buttonState1 = HIGH;      // Aktueller Zustand des ersten Buttons
+bool lastButtonState1 = HIGH;  // Letzter Zustand des ersten Buttons
+bool buttonState2 = HIGH;      // Aktueller Zustand des zweiten Buttons
+bool lastButtonState2 = HIGH;  // Letzter Zustand des zweiten Buttons
+unsigned long lastDebounceTime1 = 0; // Entprellzeit für den ersten Button
+unsigned long lastDebounceTime2 = 0; // Entprellzeit für den zweiten Button
+
+void setup() {
+  pinMode(buttonPin1, INPUT_PULLUP); // Pull-up für den ersten Taster
+  pinMode(buttonPin2, INPUT_PULLUP); // Pull-up für den zweiten Taster
+
+  Keyboard.begin();
+}
+
+void loop() {
+  // Verarbeitung für den ersten Taster
+  handleButton(buttonPin1, keyCode1, buttonState1, lastButtonState1, lastDebounceTime1);
+
+  // Verarbeitung für den zweiten Taster
+  handleButton(buttonPin2, keyCode2, buttonState2, lastButtonState2, lastDebounceTime2);
+}
+
+void handleButton(int buttonPin, char keyCode, bool &buttonState, bool &lastButtonState, unsigned long &lastDebounceTime) {
+  // Lese den aktuellen Zustand des Buttons
+  int reading = digitalRead(buttonPin);
+
+  // Prüfen, ob der Zustand sich geändert hat
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
+  }
+
+  // Wenn die Entprellzeit abgelaufen ist
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    if (reading != buttonState) {
+      buttonState = reading;
+
+      // Aktionen basierend auf dem Button-Zustand
+      if (buttonState == LOW) {
+        Keyboard.press(keyCode); 
+      } else {
+        Keyboard.release(keyCode);
+      }
+    }
+  }
+
+  lastButtonState = reading;
+}
